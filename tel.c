@@ -5,7 +5,7 @@
 
 void tel_how() 
 {
-	printf("tel to show tips\ntel -a to add\ntel -d to delete\ntel -l to print\n");
+	printf("tel word to search\ntel to show tips\ntel -a to add\ntel -d to delete\ntel -l to print\n");
 }
 
 int tel_search(PHONE *list, char *input, int size) 
@@ -38,12 +38,12 @@ void tel_add(PHONE *list, char *name, char *phone, char *memo, int size)
 			strcat(put, list[i].phone);
 			strcat(put, ":");
 			strcat(put, list[i].memo);
-			if(i < size) {
+			if(i == size) {
 				strcat(put, "\n");
 			}
 			fputs(put, fp);
 		}
-	fclose(fp);
+		fclose(fp);
 	}
 }
 
@@ -55,58 +55,59 @@ void tel_del(PHONE *list, char *input, int size)
 		if(strstr(list[i].name, input) != NULL||
 			strstr(list[i].phone, input) != NULL ||
 			strstr(list[i].memo, input) != NULL) {
-			printf("%d %s %s %s\n", ++count, list[i].name, list[i].phone, list[i].memo);
+			printf("%d %s %s %s", ++count, list[i].name, list[i].phone, list[i].memo);
 			arr[count] = i;
 		}
 	}
-	printf("\nwhich one? ");
-	int ch;
-	scanf("%d", &ch);
-	for(int ans = arr[ch]; ans < size; ans++) {
-		list[ans] = list[ans+1];
+	if (count == 0) {
+		printf("no match found\n");
 	}
-	FILE *fp = fopen("data.txt", "w");
-	for(int i = 0; i < size-1; i++) {
-		char *put = (char *)malloc(sizeof(char) * MAX_PHONE_SIZE);
-		strcpy(put, list[i].name);
-		strcat(put, ":");
-		strcat(put, list[i].phone);
-		strcat(put, ":");
-		strcat(put, list[i].memo);
-		if(i < size-2) {
-			strcat(put, "\n");
+	else {
+		printf("\nwhich one? ");
+		int ch;
+		scanf("%d", &ch);
+		for(int ans = arr[ch]; ans < size; ans++) {
+			list[ans] = list[ans+1];
 		}
-		
-		fputs(put, fp);
+		FILE *fp = fopen("data.txt", "w");
+		for(int i = 0; i < size-1; i++) {
+			char *put = (char *)malloc(sizeof(char) * MAX_PHONE_SIZE);
+			strcpy(put, list[i].name);
+			strcat(put, ":");
+			strcat(put, list[i].phone);
+			strcat(put, ":");
+			strcat(put, list[i].memo);
+			fputs(put, fp);
+		}
+		fclose(fp);
 	}
-	fclose(fp);
 }
 
 void tel_print(PHONE *list, int size) 
 {
 	for(int i = 0; i < size; i++) {
 		printf("%d %s %s %s", i+1, list[i].name, list[i].phone, list[i].memo);
-		printf("\n");
 	}
 }
 
 
 int main(int argc, char *argv[])
 {
-	FILE *fp = fopen("data.txt", "r");
-	PHONE list[100];
+	PHONE *list = (PHONE *)malloc(sizeof(PHONE) * 100);
 	int count = 0;
-
+	FILE *fp = fopen("data.txt", "r");
 	while(!feof(fp)) {
 		char *line = (char *)malloc(sizeof(char) * MAX_PHONE_SIZE);
 		fgets(line, MAX_PHONE_SIZE, fp);
+		if (strcmp(line, "\0") == 0) {
+			continue;
+		}
 		strcpy(list[count].name, strtok(line, ":"));
 		strcpy(list[count].phone, strtok(NULL, ":"));
-		strcpy(list[count].memo, strtok(NULL, ":\n"));
+		strcpy(list[count].memo, strtok(NULL, ":"));
 		count++;
 	}
 	fclose(fp);
-
 	if (argc == 1) {
 		tel_how();
 		return 0;
@@ -131,8 +132,5 @@ int main(int argc, char *argv[])
 			}
 		}
 	}
-
-	fclose(fp);
-
 	return 0;
 }

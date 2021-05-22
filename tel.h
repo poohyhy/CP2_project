@@ -1,5 +1,6 @@
 #define MAX_PHONE_SIZE 100
 
+// PHONE 구조체
 typedef struct PHONE {
 	char name[30];
 	char phone[20];

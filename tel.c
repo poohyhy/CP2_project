@@ -85,8 +85,17 @@ void tel_del(PHONE *list, char *input, int size)
 
 void tel_print(PHONE *list, int size) 
 {
-	for(int i = 0; i < size; i++) {
-		printf("%d %s %s %s", i+1, list[i].name, list[i].phone, list[i].memo);
+	PHONE tmp;
+	if (size <= 1) {
+		for(int i = 0; i < size; i++) {
+			printf("%d %s %s %s", i+1, list[i].name, list[i].phone, list[i].memo);
+		}
+	}
+	else {
+		qsort(list, size, sizeof(PHONE), strcmp);
+		for(int i = 0; i < size; i++) {
+			printf("%d %s %s %s", i+1, list[i].name, list[i].phone, list[i].memo);
+		}	
 	}
 }
 

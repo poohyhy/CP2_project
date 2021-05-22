@@ -16,7 +16,7 @@ int tel_search(PHONE *list, char *input, int size)
 		if (strstr(list[i].name, input) != NULL||
 			strstr(list[i].phone, input) != NULL ||
 			strstr(list[i].memo, input) != NULL ) {
-			printf("%d %s %s %s\n", ++count, list[i].name, list[i].phone, list[i].memo);
+			printf("%d %s %s %s", ++count, list[i].name, list[i].phone, list[i].memo);
 		}
 	}
 	return count;

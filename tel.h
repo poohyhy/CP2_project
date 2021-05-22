@@ -1,14 +1,13 @@
 #define MAX_PHONE_SIZE 100
 
-typedef struct PHONE{
-	char *name;
-	char *phone;
-	char *memo;
-	struct PHONE *link;
+typedef struct PHONE {
+	char name[30];
+	char phone[20];
+	char memo[40];
 } PHONE;
 
 void tel_how();
-int *tel_search(PHONE *, char *); 
-PHONE *tel_add(PHONE *, char *, char *, char *);
-PHONE *tel_del(PHONE *, char *);
-void tel_print(PHONE *);
+int tel_search(PHONE *list, char *input, int size); 
+void tel_add(PHONE *list, char *name, char *phone, char *memo, int size);
+void tel_del(PHONE *list, char *input, int size);
+void tel_print(PHONE *list, int size);

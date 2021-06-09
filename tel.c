@@ -98,6 +98,12 @@ void tel_del(PHONE *list, char *input, int size)
 	}
 }
 
+int cmpstr(void const *a, void const *b) {
+    char const *aa = (char const *)a;
+    char const *bb = (char const *)b;
+
+    return strcmp(aa, bb);
+}
 // list
 void tel_print(PHONE *list, int size) 
 {
@@ -113,7 +119,7 @@ void tel_print(PHONE *list, int size)
 	}
 	// 요소가 2개 이상이면 name필드를 strcmp로 qsort하여 알파벳순 정렬
 	else if (size >= 2) {
-		qsort(list, size, sizeof(PHONE), strcmp);
+		qsort(list, size, sizeof(PHONE), cmpstr);
 		for(int i = 0; i < size; i++) {
 			printf("%d %s %s %s", i+1, list[i].name, list[i].phone, list[i].memo);
 		}	
